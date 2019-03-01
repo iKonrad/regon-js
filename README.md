@@ -1,4 +1,4 @@
-# regon-api
+# regon-js
 
 A simple promise-based library to integrate [REGON-API](https://wyszukiwarkaregon.stat.gov.pl) into any Node.js and browser system.
 
