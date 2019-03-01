@@ -25,7 +25,9 @@ const client = new Regon({
 
 // Without async-await
 client.login().then(() => {
-  const results = client.searchByNip('1234567890');
+  const results = client.search({
+    nip: 1234567890
+  });
   console.log("Results", results);
 })
 
