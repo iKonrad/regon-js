@@ -2,12 +2,17 @@ import Payload from "./payload";
 import TYPES from "./types";
 import Http from "./http";
 
+const SANDBOX_API_KEY = "abcde12345abcde12345";
+
 class Regon {
   key = null;
 
+  sandbox = false;
+
   constructor(config) {
-    this.key = config.key;
-    this.client = new Http();
+    this.sandbox = !!config.sandbox;
+    this.key = this.sandbox ? SANDBOX_API_KEY : config.key;
+    this.client = new Http(this.sandbox);
   }
 
   async login() {

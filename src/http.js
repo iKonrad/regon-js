@@ -3,14 +3,25 @@ import XmlParser from "fast-xml-parser";
 import unescape from "unescape";
 
 const url = "https://wyszukiwarkaregon.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc";
+const testUrl =
+  "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc";
 
 class Http {
   sessionId = null;
 
+  sandbox = false;
+
+  url = url;
+
+  constructor(sandbox) {
+    this.sandbox = !!sandbox;
+    this.url = this.sandbox ? testUrl : url;
+  }
+
   async request(payload) {
     try {
       const response = await Axios.request({
-        url,
+        url: this.url,
         method: "post",
         data: payload.toString(),
         headers: {
