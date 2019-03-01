@@ -18,11 +18,28 @@ class Regon {
     }
   }
 
-  async searchByNip(nip) {
+  async logout() {
+    const payload = new Payload(TYPES.WYLOGUJ, { key: this.key });
+    await this.client.request(payload);
+    this.key = null;
+  }
+
+  /**
+   * Search by different keys
+   * Search is a key-value pair object with one of the following options:
+   * krs, krsy, nip, nipy, regon, regony14zn, regony9zn
+   * @param search
+   * @returns {Promise<*>}
+   */
+  async search(search) {
+    if (!this.isLoggedIn()) {
+      console.error(
+        "You are not logged in. Make sure to run the login action first."
+      );
+      return;
+    }
     const payload = new Payload(TYPES.DANE_SZUKAJ, {
-      search: {
-        nip
-      }
+      search
     });
 
     const response = await this.client.request(payload);
@@ -31,6 +48,33 @@ class Regon {
     }
 
     return null;
+  }
+
+  async getFullReport(regon, reportName) {
+    if (!this.isLoggedIn()) {
+      console.error(
+        "You are not logged in. Make sure to run the login action first."
+      );
+      return;
+    }
+
+    const payload = new Payload(TYPES.DANE_POBIERZ_PELNY_RAPORT, {
+      regon,
+      reportName
+    });
+
+    const response = await this.client.request(payload);
+
+    console.log("response", response);
+    if (response.DaneSzukajResponse.DaneSzukajResult) {
+      return response.DaneSzukajResponse.DaneSzukajResult.root.dane;
+    }
+
+    return null;
+  }
+
+  isLoggedIn() {
+    return this.client && this.client.hasSessionId();
   }
 }
 

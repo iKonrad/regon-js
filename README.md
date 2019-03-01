@@ -3,10 +3,12 @@
 A simple promise-based library to integrate [REGON-API](https://wyszukiwarkaregon.stat.gov.pl) into any Node.js and browser system.
 
 ## How to use
-- Install with npm `npm i regon-js -S`
-- or install with yarn `yarn add regon-js`
+
+-   Install with npm `npm i regon-js -S`
+-   or install with yarn `yarn add regon-js`
 
 ### Example usage:
+
 ```javascript
 // Import with ES5
 var Regon = require('regon-api').default;
@@ -19,27 +21,38 @@ const client = new Regon({
   key: 'YOUR_API_KEY',
 });
 
-// Without await
+
+// Without async-await
 client.login().then(() => {
   const results = client.searchByNip('1234567890');
   console.log("Results", results);
 })
 
-// With await
-await client.login();
-const results = await client.searchByNip('1234567890');
+
+// With async-await
+await client.login(); // Log in to obtain a new session ID
+
+const results = await client.search({
+  nip: 1234567890,
+});
+
+await client.logout(); // Log out to remove the session ID
+
 console.log('Results', results);
 ```
+
+The data is returned in the same format as specified on the API REGON documentation (without the response wrappers)
 
 More examples coming soon.
 
 ## Contribution
+
 Pull requests are more than welcome.
 
-1. Pull the repository
-2. Make changes
-3. Run build script `npm run build`
-4. Submit a PR
+1.  Pull the repository
+2.  Make changes
+3.  Run build script `npm run build`
+4.  Submit a PR
 
 ## API
 

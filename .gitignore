@@ -1,6 +1,7 @@
 .DS_Store
 coverage
 dist
+dist-example
 node_modules
 *.log
 .idea
